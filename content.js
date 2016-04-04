@@ -35,19 +35,19 @@
 		}
 	}
 
-	function likeness(textA, textB) {
+	function likeness(movieA, movieB) {
 		// @TODO
-		return 1/Math.abs(textA.length - textB.length)
+		return 1/Math.abs(movieA.text.length - movieB.text.length)
 	}
 
-	function getPrediction(text, movies) {
+	function getPrediction(thisMovie, movies) {
 		var ratings = {}
 		var total = {
 			rating: 0,
 			weight: 0
 		}
 		for (var key in movies) {
-			ratings[movies[key].rating] = likeness(text, movies[key].text)
+			ratings[movies[key].rating] = likeness(thisMovie, movies[key])
 		}
 		for (var key in ratings) {
 			total.rating += ratings[key] * key
@@ -78,6 +78,13 @@
 		}
 	}
 
+	function createMovie(text, rating) {
+		return {
+			text: text,
+			rating: rating
+		}
+	}
+
 
 
 	var id = getId()
@@ -90,14 +97,11 @@
 
 			if (rating) {
 				// Save rating
-				movies[id] = {
-					text: text,
-					rating: rating
-				}
+				movies[id] = createMovie(text, rating)
 				chrome.storage.local.set({movies: movies})
 			} else {
 				// Predict rating
-				var prediction = getPrediction(text, movies)
+				var prediction = getPrediction(createMovie(text, 0), movies)
 				if (prediction !== false) {
 					showPrediction(prediction)
 				}
