@@ -1,0 +1,21 @@
+{
+	"manifest_version": 2,
+	"name": "ČSFD predict",
+	"version": "0.0.1",
+
+	"description": "Přepovídání hodnocení filmů na ČSFD",
+
+	"permissions": [
+		"storage",
+		"http://www.csfd.cz/*"
+	],
+	"content_scripts": [
+		{
+			"matches": ["http://www.csfd.cz/film/*"],
+			"js": ["content.js"]
+		}
+	],
+
+
+	"author": "Filip Chalupa <chalupa.filip@gmail.com>"
+}
