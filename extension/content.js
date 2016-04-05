@@ -36,8 +36,7 @@
 	}
 
 	function likeness(movieA, movieB) {
-		// @TODO
-		return 1/Math.abs(movieA.text.length - movieB.text.length)
+		return compareTwoStrings(movieA.text, movieB.text)
 	}
 
 	function getPrediction(thisMovie, movies) {

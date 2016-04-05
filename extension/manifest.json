@@ -12,7 +12,7 @@
 	"content_scripts": [
 		{
 			"matches": ["http://www.csfd.cz/film/*"],
-			"js": ["content.js"]
+			"js": ["node_modules/string-similarity/node_modules/lodash/dist/lodash.min.js", "compare-strings.js", "content.js"]
 		}
 	],
 
