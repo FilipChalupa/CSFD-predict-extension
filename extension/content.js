@@ -93,14 +93,15 @@
 	if (id && text) {
 		chrome.storage.local.get(['movies'], function(result) {
 			var movies = result.movies ? result.movies : {}
+			var thisMovie = createMovie(text, rating)
 
 			if (rating) {
 				// Save rating
-				movies[id] = createMovie(text, rating)
+				movies[id] = thisMovie
 				chrome.storage.local.set({movies: movies})
 			} else {
 				// Predict rating
-				var prediction = getPrediction(createMovie(text, 0), movies)
+				var prediction = getPrediction(thisMovie, movies)
 				if (prediction !== false) {
 					showPrediction(prediction)
 				}
