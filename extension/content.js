@@ -1,9 +1,22 @@
 (function() {
 
+	function trim(text) {
+		return text.replace(/^\s+|\s+$/g, '')
+	}
+
 	function getText() {
 		var wrapper = document.querySelector('#plots .content ul')
 		if (wrapper) {
-			return wrapper.innerHTML.replace(/<[^>]*>/g, '')
+			return trim(wrapper.innerHTML.replace(/<[^>]*>/g, ''))
+		} else {
+			return false
+		}
+	}
+
+	function getTitle() {
+		var wrapper = document.querySelector('#profile .header h1')
+		if (wrapper) {
+			return trim(wrapper.innerHTML.replace(/<[^>]*>/g, ''))
 		} else {
 			return false
 		}
@@ -77,8 +90,9 @@
 		}
 	}
 
-	function createMovie(text, rating) {
+	function createMovie(title, text, rating) {
 		return {
+			title: title,
 			text: text,
 			rating: rating
 		}
@@ -88,12 +102,13 @@
 
 	var id = getId()
 	var text = getText()
+	var title = getTitle()
 	var rating = getRating()
 
 	if (id && text) {
 		chrome.storage.local.get(['movies'], function(result) {
 			var movies = result.movies ? result.movies : {}
-			var thisMovie = createMovie(text, rating)
+			var thisMovie = createMovie(title, text, rating)
 
 			if (rating) {
 				// Save rating

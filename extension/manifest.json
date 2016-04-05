@@ -15,6 +15,9 @@
 			"js": ["node_modules/string-similarity/node_modules/lodash/dist/lodash.min.js", "compare-strings.js", "content.js"]
 		}
 	],
+	"browser_action": {
+		"default_popup": "popup.html"
+	},
 
 
 	"author": "Filip Chalupa <chalupa.filip@gmail.com>"
