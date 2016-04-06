@@ -6,9 +6,21 @@
 		console.log(movies)
 
 		if (Object.keys(movies).length > 0) {
+			var sortedMovieKeys = Object.keys(movies).sort(function(a,b){
+				var titleA = movies[a].title.toLowerCase()
+				var titleB = movies[b].title.toLowerCase()
+				if (titleA < titleB) {
+					return -1
+				} else if (titleA > titleB) {
+					return 1
+				}
+				return 0
+			})
+
 			registeredWrapper.innerHTML = ''
 
-			for (var key in movies) {
+			for (var sortKey in sortedMovieKeys) {
+				var key = sortedMovieKeys[sortKey]
 				var movieEl = document.createElement('div')
 				movieEl.classList.add('item')
 
