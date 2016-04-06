@@ -54,17 +54,19 @@
 
 	function getPrediction(thisMovie, movies) {
 		var maxLikeness = 0
-		var rating = false
+		var bestMatchMovieKey = false
 
 		for (var key in movies) {
 			var thisLikeness = likeness(thisMovie, movies[key])
 			if (thisLikeness > maxLikeness) {
 				maxLikeness = thisLikeness
-				rating = movies[key].rating
+				bestMatchMovieKey = key
 			}
 		}
 
-		return rating
+		console.log('Nejpodobnější: ', movies[bestMatchMovieKey].title)
+		console.log(movies[bestMatchMovieKey])
+		return movies[bestMatchMovieKey].rating
 	}
 
 	function showPrediction(rating) {
