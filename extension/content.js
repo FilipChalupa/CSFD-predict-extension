@@ -53,22 +53,18 @@
 	}
 
 	function getPrediction(thisMovie, movies) {
-		var ratings = {}
-		var total = {
-			rating: 0,
-			weight: 0
-		}
+		var maxLikeness = 0
+		var rating = false
+
 		for (var key in movies) {
-			ratings[movies[key].rating] = likeness(thisMovie, movies[key])
+			var thisLikeness = likeness(thisMovie, movies[key])
+			if (thisLikeness > maxLikeness) {
+				maxLikeness = thisLikeness
+				rating = movies[key].rating
+			}
 		}
-		for (var key in ratings) {
-			total.rating += ratings[key] * key
-			total.weight += ratings[key]
-		}
-		if (total.weight > 0) {
-			return total.rating / total.weight
-		}
-		return false
+
+		return rating
 	}
 
 	function showPrediction(rating) {
