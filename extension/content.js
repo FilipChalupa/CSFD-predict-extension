@@ -98,17 +98,22 @@
 			}
 		}
 
-		console.log('Nejpodobnější: ', movies[bestMatchMovieKey].title)
-		console.log(movies[bestMatchMovieKey])
-		return movies[bestMatchMovieKey].rating
+		if (bestMatchMovieKey === false) {
+			return false
+		} else {
+			return {
+				'rating': movies[bestMatchMovieKey].rating,
+				'similar': movies[bestMatchMovieKey]
+			}
+		}
 	}
 
-	function showPrediction(rating) {
+	function showPrediction(rating, similarMovie) {
 		var wrapper = document.querySelector('#rating .average')
 		if (wrapper) {
 			var prediction = document.createElement('span')
 			prediction.innerHTML = Math.round(rating) + '%'
-			prediction.title = 'Vaše předpokládané hodnocení'
+			prediction.title = 'Odhad na základě podobnosti s: „'+similarMovie.title+'“'
 			prediction.style.fontSize = '40%'
 			prediction.style.position = 'absolute'
 			prediction.style.top = '0'
@@ -148,7 +153,7 @@
 				// Predict rating
 				var prediction = getPrediction(thisMovie, movies)
 				if (prediction !== false) {
-					showPrediction(prediction)
+					showPrediction(prediction.rating, prediction.similar)
 				}
 			} else {
 				// Save rating
