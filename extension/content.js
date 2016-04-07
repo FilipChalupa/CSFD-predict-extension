@@ -61,7 +61,7 @@
 		}
 	}
 
-	function compareGenres(genresA, genresB) {
+	function compareTwoArrays(genresA, genresB) {
 		var itemsCount = genresA.length + genresB.length
 		var matchesCount = 0
 
@@ -80,7 +80,7 @@
 
 	function likeness(movieA, movieB) {
 		var texts = compareTwoStrings(movieA.text || '', movieB.text || '')
-		var genres = compareGenres(movieA.genres || [], movieB.genres || [])
+		var genres = compareTwoArrays(movieA.genres || [], movieB.genres || [])
 
 		// Genres have larger weight
 		return (1*texts + 2*genres) / 3
@@ -91,6 +91,9 @@
 		var bestMatchMovieKey = false
 
 		for (var key in movies) {
+			if (thisMovie.id === movies[key].id) {
+				continue
+			}
 			var thisLikeness = likeness(thisMovie, movies[key])
 			if (thisLikeness > maxLikeness) {
 				maxLikeness = thisLikeness
@@ -127,9 +130,10 @@
 		}
 	}
 
-	function createMovie(rating, title, text, genres) {
+	function createMovie(rating, id, title, text, genres) {
 		return {
 			rating: rating,
+			id: id,
 			title: title,
 			text: text,
 			genres: genres
@@ -147,18 +151,27 @@
 	if (id) {
 		chrome.storage.local.get(['movies'], function(result) {
 			var movies = result.movies ? result.movies : {}
-			var thisMovie = createMovie(rating, title, text, genres)
+			var thisMovie = createMovie(rating, id, title, text, genres)
 
 			if (rating === false) {
 				// Predict rating
+				console.log('Začátek hledání odpovídajícího hodnocení.')
+				console.time('getPrediction')
 				var prediction = getPrediction(thisMovie, movies)
 				if (prediction !== false) {
 					showPrediction(prediction.rating, prediction.similar)
 				}
+				console.timeEnd('getPrediction')
 			} else {
 				// Save rating
 				movies[id] = thisMovie
 				chrome.storage.local.set({movies: movies})
+
+				// Get test prediction
+				var prediction = getPrediction(thisMovie, movies)
+				console.log('Tento film je již ohodnocený. Odhah vašeho hodnocení by jinak byl:')
+				console.log('\thodnocení: '+prediction.rating+'%')
+				console.log('\tpodobný s: '+prediction.similar.title)
 			}
 
 		})
