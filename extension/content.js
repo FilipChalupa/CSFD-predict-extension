@@ -61,8 +61,29 @@
 		}
 	}
 
+	function compareGenres(genresA, genresB) {
+		var itemsCount = genresA.length + genresB.length
+		var matchesCount = 0
+
+		for (var i = genresA.length - 1; i >= 0; i--) {
+			if (genresB.indexOf(genresA[i]) > -1) {
+				matchesCount += 2
+			}
+		}
+
+		if (itemsCount === 0) {
+			return 1
+		} else {
+			return matchesCount / itemsCount
+		}
+	}
+
 	function likeness(movieA, movieB) {
-		return compareTwoStrings(movieA.text, movieB.text)
+		var texts = compareTwoStrings(movieA.text || '', movieB.text || '')
+		var genres = compareGenres(movieA.genres || [], movieB.genres || [])
+
+		// Genres have larger weight
+		return (1*texts + 2*genres) / 3
 	}
 
 	function getPrediction(thisMovie, movies) {
@@ -102,7 +123,6 @@
 	}
 
 	function createMovie(rating, title, text, genres) {
-		console.log(arguments)
 		return {
 			rating: rating,
 			title: title,
@@ -119,7 +139,7 @@
 	var rating = getRating()
 	var genres = getGenres()
 
-	if (id && text) {
+	if (id) {
 		chrome.storage.local.get(['movies'], function(result) {
 			var movies = result.movies ? result.movies : {}
 			var thisMovie = createMovie(rating, title, text, genres)
