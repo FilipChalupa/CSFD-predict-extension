@@ -1,5 +1,7 @@
-# ČSFD - bude se mi to líbit?
+# ČSFD předpověď - bude se mi to líbit?
 
-Google Chrome Extension
+Rozšíření pro Google Chrome, které uživatelům [ČSFD](http://www.csfd.cz/) zobrazuje předpověď hodnocení filmů, na něž se teprve hodlají podívat.
 
-https://chrome.google.com/webstore/detail/%C4%8Dsfd-p%C5%99edpov%C4%9B%C4%8F/oncljlheialoiebbjngbdmlkmobiebfh
+Ke stažení v [Internetovém obchodě Chrome](https://chrome.google.com/webstore/detail/%C4%8Dsfd-p%C5%99edpov%C4%9B%C4%8F/oncljlheialoiebbjngbdmlkmobiebfh)
+
+![Printscreen](https://raw.githubusercontent.com/Onset/CSFD-predict-extension/master/store-printscreen-1.png)
