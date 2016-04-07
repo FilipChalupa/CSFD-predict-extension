@@ -9,7 +9,20 @@
 		if (wrapper) {
 			return trim(wrapper.innerHTML.replace(/<[^>]*>/g, ''))
 		} else {
-			return false
+			return ''
+		}
+	}
+
+	function getGenres() {
+		var wrapper = document.querySelector('#profile .content .genre')
+		if (wrapper) {
+			var genres = wrapper.innerHTML.split('/')
+			for (var i = genres.length - 1; i >= 0; i--) {
+				genres[i] = trim(genres[i])
+			}
+			return genres
+		} else {
+			return []
 		}
 	}
 
@@ -18,7 +31,7 @@
 		if (wrapper) {
 			return trim(wrapper.innerHTML.replace(/<[^>]*>/g, ''))
 		} else {
-			return false
+			return ''
 		}
 	}
 
@@ -32,7 +45,7 @@
 			}
 		}
 		if (i >= urlParts.length) {
-			return false
+			return ''
 		} else {
 			return urlParts[i]
 		}
@@ -88,11 +101,13 @@
 		}
 	}
 
-	function createMovie(title, text, rating) {
+	function createMovie(rating, title, text, genres) {
+		console.log(arguments)
 		return {
+			rating: rating,
 			title: title,
 			text: text,
-			rating: rating
+			genres: genres
 		}
 	}
 
@@ -102,22 +117,23 @@
 	var text = getText()
 	var title = getTitle()
 	var rating = getRating()
+	var genres = getGenres()
 
 	if (id && text) {
 		chrome.storage.local.get(['movies'], function(result) {
 			var movies = result.movies ? result.movies : {}
-			var thisMovie = createMovie(title, text, rating)
+			var thisMovie = createMovie(rating, title, text, genres)
 
-			if (rating) {
-				// Save rating
-				movies[id] = thisMovie
-				chrome.storage.local.set({movies: movies})
-			} else {
+			if (rating === false) {
 				// Predict rating
 				var prediction = getPrediction(thisMovie, movies)
 				if (prediction !== false) {
 					showPrediction(prediction)
 				}
+			} else {
+				// Save rating
+				movies[id] = thisMovie
+				chrome.storage.local.set({movies: movies})
 			}
 
 		})
